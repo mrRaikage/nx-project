@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "nx-project",
+  "projects": {
+    "nx-project": {
+      "projectType": "application",
+      "root": "apps/nx-project",
+      "sourceRoot": "apps/nx-project/src",
+      "prefix": "nx-project",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/nx-project",
+            "index": "apps/nx-project/src/index.html",
+            "main": "apps/nx-project/src/main.ts",
+            "polyfills": "apps/nx-project/src/polyfills.ts",
+            "tsConfig": "apps/nx-project/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/nx-project/src/favicon.ico",
+              "apps/nx-project/src/assets"
+            ],
+            "styles": ["apps/nx-project/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/nx-project/src/environments/environment.ts",
+                  "with": "apps/nx-project/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "nx-project:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "nx-project:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "nx-project:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/nx-project/src/**/*.ts",
+              "apps/nx-project/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/nx-project"],
+          "options": {
+            "jestConfig": "apps/nx-project/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "nx-project-e2e": {
+      "root": "apps/nx-project-e2e",
+      "sourceRoot": "apps/nx-project-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/nx-project-e2e/cypress.json",
+            "tsConfig": "apps/nx-project-e2e/tsconfig.e2e.json",
+            "devServerTarget": "nx-project:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "nx-project:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/nx-project-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  }
+}
