@@ -1,0 +1,28 @@
+<form class="form" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <h1 class="form__title">Login</h1>
+  <mat-form-field appearance="outline">
+    <input
+      placeholder="Email:"
+      class="form__input"
+      type="email"
+      formControlName="username"
+      matInput>
+    <mat-error *ngIf="!username.valid">
+      <span *ngIf="username.errors['email']">Incorrect email</span>
+      <span *ngIf="username.errors['required']">Email is required</span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <input
+      placeholder="Password:"
+      class="form__input"
+      type="password"
+      formControlName="password"
+      matInput>
+    <mat-error *ngIf="!password.valid">
+      <span *ngIf="password.errors['minlength']">Password should contain more than 7 symbols</span>
+      <span *ngIf="password.errors['required']">Password is required</span>
+    </mat-error>
+  </mat-form-field>
+  <button mat-button type="submit">Submit</button>
+</form>

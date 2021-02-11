@@ -1,0 +1,18 @@
+@import "variables";
+
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  height: 500px;
+  width: 50%;
+  margin: 150px auto 0 auto;
+  border: 2px solid $cornflowerBlueLight;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.mobile-container {
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+}
